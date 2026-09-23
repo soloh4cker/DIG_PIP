@@ -1,0 +1,5 @@
+import { eq } from "drizzle-orm";
+import { getDb } from "@/db";
+import { activities, comments, tasks } from "@/db/schema";
+const people=["Ketan","Deep&Sana"];
+export async function POST(request:Request,{params}:{params:Promise<{id:string}>}){try{const id=Number((await params).id),b=await request.json() as {body?:string;author?:string},text=b.body?.trim()||"",author=b.author||"";if(!text)return Response.json({error:"Comment cannot be empty."},{status:400});if(!people.includes(author))return Response.json({error:"Choose who is commenting."},{status:400});const db=getDb(),now=new Date().toISOString(),[task]=await db.select({id:tasks.id}).from(tasks).where(eq(tasks.id,id));if(!task)return Response.json({error:"Task not found."},{status:404});const [comment]=await db.insert(comments).values({taskId:id,author,body:text,createdAt:now}).returning();await db.batch([db.update(tasks).set({updatedAt:now}).where(eq(tasks.id,id)),db.insert(activities).values({taskId:id,actor:author,kind:"commented",detail:"added a comment",createdAt:now})]);return Response.json({comment},{status:201})}catch{return Response.json({error:"Could not add the comment."},{status:500})}}
