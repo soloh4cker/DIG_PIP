@@ -4,10 +4,11 @@ A simple shared project board for the Days Inn Grayling Property Improvement Pla
 
 ## Features
 
-- Create and assign tasks to Ketan or Deep&Sana
+- Create and assign tasks to Ketan, Deep, or Sana
 - Track To do, In progress, and Completed work
 - Add category, priority, description, and optional due date
-- Comment on tasks and retain activity history
+- Add, edit, or delete comments and retain activity history
+- Edit task details or delete completed/cancelled tasks
 - Filter by team member and search the board
 - Shared persistent Cloudflare D1 database
 - Responsive desktop and mobile interface
